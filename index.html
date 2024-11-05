@@ -30,7 +30,7 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             z-index: 5;
-            display: none;
+            display: none; /* El botón rojo ahora está oculto por defecto */
         }
         #back-button {
             padding: 10px 20px;
@@ -105,32 +105,38 @@
             ui.style.display = 'none';
         });
 
-        // Detectar cuando el modelo 3D está completamente cargado
+        // Detectar cuando el modelo 3D está completamente cargado y el target está visible
         AFRAME.registerComponent('model-tracker', {
             init: function () {
-                const model = this.el;
+                const model = this.el.querySelector('a-gltf-model');
+
+                // Al iniciar, ocultamos el botón para asegurarnos que no aparezca hasta cargar un modelo
+                redButton.style.display = 'none';
+
+                this.el.addEventListener('targetFound', () => {
+                    redButton.style.display = 'none'; // Aseguramos que se mantenga oculto mientras carga el modelo
+                });
 
                 model.addEventListener('model-loaded', () => {
-                    redButton.style.display = 'block';
+                    if (this.el.object3D.visible) { // Verifica si el target sigue visible cuando el modelo carga
+                        redButton.style.display = 'block';
+                    }
                 });
 
-                model.addEventListener('model-error', () => {
-                    redButton.style.display = 'none';
-                });
-
-                // Ocultar el botón cuando no se encuentra el target
+                // Oculta el botón cuando se pierde el target
                 this.el.addEventListener('targetLost', () => {
                     redButton.style.display = 'none';
                 });
             }
         });
 
-        // Agrega el componente a cada target con modelo 3D (targetIndex 0 al 9)
+        // Asignar el componente a cada target del 0 al 9
         for (let i = 0; i <= 9; i++) {
             document.getElementById(`target${i}`).setAttribute('model-tracker', '');
         }
     </script>
 </body>
 </html>
+
 
 
