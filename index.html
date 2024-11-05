@@ -1,48 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <title>Mind AR Multi-Target</title>
+      <title>Migracion Multi-Target</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
       <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-      <style>
-          #ui {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              display: none;
-              background: rgba(0, 0, 0, 0.8);
-              justify-content: center;
-              align-items: center;
-              z-index: 10;
-          }
-          .circle {
-              width: 50px;
-              height: 50px;
-              background-color: red;
-              border-radius: 50%;
-              position: absolute;
-              transform: translate(-50%, -50%);
-              cursor: pointer;
-              z-index: 5;
-          }
-          #back-button {
-              padding: 10px 20px;
-              background-color: white;
-              border: none;
-              cursor: pointer;
-              font-size: 16px;
-          }
-      </style>
+      
   </head>
   <body>
-    <!-- UI overlay -->
-    <div id="ui">
-      <button id="back-button">Regresar</button>
-    </div>
 
     <a-scene mindar-image="imageTargetSrc: targets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
@@ -51,6 +17,7 @@
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        
 
       <!-- Target Entities with Circle Buttons -->
      <a-entity mindar-image-target="targetIndex: 0">
@@ -92,19 +59,6 @@
 
     </a-scene>
 
-    <script>
-      const ui = document.getElementById('ui');
-      const backButton = document.getElementById('back-button');
-
-      // Función para mostrar la UI
-      function showUI() {
-          ui.style.display = 'flex';
-      }
-
-      // Evento para regresar a la vista AR
-      backButton.addEventListener('click', () => {
-          ui.style.display = 'none';
-      });
-    </script>
+    
   </body>
 </html>
