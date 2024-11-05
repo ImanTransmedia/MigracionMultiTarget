@@ -19,16 +19,6 @@
               align-items: center;
               z-index: 10;
           }
-          .circle {
-              width: 50px;
-              height: 50px;
-              background-color: red;
-              border-radius: 50%;
-              position: absolute;
-              transform: translate(-50%, -50%);
-              cursor: pointer;
-              z-index: 5;
-          }
           #back-button {
               padding: 10px 20px;
               background-color: white;
@@ -55,12 +45,29 @@
       <!-- Target Entities with Circle Buttons -->
       <a-entity mindar-image-target="targetIndex: 0" id="target0">
           <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-          <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: red; opacity: 0.8" onclick="showUI()"></a-plane>
+          <!-- Botón circular que sigue al target -->
+          <a-circle 
+              position="0 0.5 0" 
+              radius="0.1" 
+              color="red" 
+              opacity="0.8" 
+              class="button-circle" 
+              event-set__click="visible: false" 
+              onclick="showUI()">
+          </a-circle>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
         <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: blue; opacity: 0.8" onclick="showUI()"></a-plane>
+        <a-circle 
+            position="0 0.5 0" 
+            radius="0.1" 
+            color="blue" 
+            opacity="0.8" 
+            class="button-circle" 
+            event-set__click="visible: false" 
+            onclick="showUI()">
+        </a-circle>
       </a-entity>
 
       <!-- Añade más entidades si es necesario -->
@@ -79,8 +86,11 @@
       // Evento para regresar a la vista AR
       backButton.addEventListener('click', () => {
           ui.style.display = 'none';
+          // Reactiva todos los botones circulares ocultos
+          document.querySelectorAll('.button-circle').forEach(button => button.setAttribute('visible', 'true'));
       });
     </script>
   </body>
 </html>
+
 
