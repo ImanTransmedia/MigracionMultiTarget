@@ -13,24 +13,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: none;
+            display: none; /* Oculto por defecto */
             background: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
             z-index: 10;
-        }
-        .circle {
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            z-index: 5;
-            display: none; /* Oculto por defecto */
         }
         #back-button {
             padding: 10px 20px;
@@ -53,8 +40,6 @@
             <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
         </a-assets>
 
-        <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: red; opacity: 0.8" onclick="showUI()" id="red-button"></a-plane>
-
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <!-- Target Entities with 3D Models -->
@@ -71,57 +56,46 @@
     <script>
         const ui = document.getElementById('ui');
         const backButton = document.getElementById('back-button');
-        const redButton = document.getElementById('red-button');
-
-        // Función para mostrar la UI
-        function showUI() {
-            ui.style.display = 'flex';
-        }
 
         // Evento para regresar a la vista AR
         backButton.addEventListener('click', () => {
-            ui.style.display = 'none';
+            ui.style.display = 'none'; // Oculta el panel UI al hacer clic en "Regresar"
         });
 
-        // Componente personalizado para gestionar la visibilidad del botón rojo
-        AFRAME.registerComponent('model-tracker', {
+        // Componente personalizado para gestionar la visibilidad del panel UI
+        AFRAME.registerComponent('ui-panel-handler', {
             init: function () {
                 const model = this.el.querySelector('a-gltf-model');
                 let isTargetFound = false;
 
-                // Al iniciar, ocultamos el botón rojo
-                redButton.style.display = 'none';
-
-                // Mostrar el botón solo cuando el modelo esté cargado y el target esté visible
+                // Mostrar el panel UI cuando el target y modelo están listos
                 this.el.addEventListener('targetFound', () => {
                     isTargetFound = true;
-                    redButton.style.display = 'none'; // Asegura que el botón esté oculto al inicio de la detección
+                    ui.style.display = 'none'; // Asegura que el panel esté oculto hasta que el modelo esté cargado
                 });
 
                 model.addEventListener('model-loaded', () => {
                     if (isTargetFound) {
-                        redButton.style.display = 'block'; // Mostrar el botón una vez el modelo esté visible
+                        ui.style.display = 'flex'; // Muestra el panel UI una vez que el modelo 3D está visible
                     }
                 });
 
-                // Ocultar el botón cuando se pierde el target
+                // Ocultar el panel cuando se pierde el target
                 this.el.addEventListener('targetLost', () => {
                     isTargetFound = false;
-                    redButton.style.display = 'none';
+                    ui.style.display = 'none';
                 });
             }
         });
 
-        // Asignar el componente model-tracker a cada target
+        // Asignar el componente ui-panel-handler a cada target
         for (let i = 0; i <= 9; i++) {
             const target = document.getElementById(`target${i}`);
             if (target) {
-                target.setAttribute('model-tracker', '');
+                target.setAttribute('ui-panel-handler', '');
             }
         }
     </script>
 </body>
 </html>
-
-
 
