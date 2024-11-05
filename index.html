@@ -7,6 +7,7 @@
       <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
       <style>
+          /* Estilo para la UI que ocupa el 80% de la pantalla */
           #ui {
               position: absolute;
               top: 0;
@@ -47,12 +48,12 @@
           <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
           <!-- Botón circular que sigue al target -->
           <a-circle 
-              position="0 0.5 0" 
-              radius="0.1" 
-              color="red" 
-              opacity="0.8" 
-              class="button-circle" 
-              event-set__click="visible: false" 
+              position="0 0.5 0.1" 
+              radius="0.15" 
+              color="red"
+              class="button-circle"
+              opacity="0.8"
+              event-set__click="visible: false"
               onclick="showUI()">
           </a-circle>
       </a-entity>
@@ -60,11 +61,11 @@
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
         <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
         <a-circle 
-            position="0 0.5 0" 
-            radius="0.1" 
-            color="blue" 
-            opacity="0.8" 
+            position="0 0.5 0.1" 
+            radius="0.15" 
+            color="blue"
             class="button-circle" 
+            opacity="0.8" 
             event-set__click="visible: false" 
             onclick="showUI()">
         </a-circle>
@@ -92,5 +93,6 @@
     </script>
   </body>
 </html>
+
 
 
