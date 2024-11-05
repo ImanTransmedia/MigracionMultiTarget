@@ -11,12 +11,10 @@
   <body>
 
       <script>
-    // Forzar la reproducción del video cuando el usuario interactúa con la página
-    document.addEventListener('click', () => {
-        const video = document.getElementById('video');
-        video.play().catch(error => {
-            console.error("No se pudo iniciar el video automáticamente:", error);
-        });
+    // Intentar reproducir automáticamente en caso de que no inicie al cargar
+    const video = document.getElementById('VideoMigracion');
+    video.play().catch(error => {
+        console.warn("El video no pudo iniciar automáticamente:", error);
     });
 </script>
 
