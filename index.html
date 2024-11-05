@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <title>Hello World!</title>
+      <title>Mind AR Multi-Target</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
       <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
@@ -17,6 +17,7 @@
               background: rgba(0, 0, 0, 0.8);
               justify-content: center;
               align-items: center;
+              z-index: 10;
           }
           .circle {
               width: 50px;
@@ -24,21 +25,25 @@
               background-color: red;
               border-radius: 50%;
               position: absolute;
+              transform: translate(-50%, -50%);
               cursor: pointer;
+              z-index: 5;
           }
           #back-button {
               padding: 10px 20px;
               background-color: white;
               border: none;
               cursor: pointer;
+              font-size: 16px;
           }
       </style>
   </head>
   <body>
+    <!-- UI overlay -->
     <div id="ui">
       <button id="back-button">Regresar</button>
     </div>
-    
+
     <a-scene mindar-image="imageTargetSrc: targets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <a-asset-item id="bearModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
@@ -47,34 +52,33 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0" id="target0" position="0 0 0">
-          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-          <a-entity class="circle" position="0 0 0" event-set__mouseenter="_event: mouseenter; color: green" event-set__mouseleave="_event: mouseleave; color: red" event-set__click="_event: click; _target: #ui; display: flex"></a-entity>
-      </a-entity>
-      
-      <a-entity mindar-image-target="targetIndex: 1" id="target1" position="0 0 0">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        <a-entity class="circle" position="0 0 0" event-set__mouseenter="_event: mouseenter; color: green" event-set__mouseleave="_event: mouseleave; color: red" event-set__click="_event: click; _target: #ui; display: flex"></a-entity>
+      <!-- Target Entities with Circle Buttons -->
+      <a-entity mindar-image-target="targetIndex: 0" id="target0">
+          <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+          <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: red; opacity: 0.8" onclick="showUI()"></a-plane>
       </a-entity>
 
-      <!-- Repite para los demás targets -->
-      
+      <a-entity mindar-image-target="targetIndex: 1" id="target1">
+        <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: blue; opacity: 0.8" onclick="showUI()"></a-plane>
+      </a-entity>
+
+      <!-- Añade más entidades si es necesario -->
+
     </a-scene>
 
     <script>
-      const backButton = document.getElementById('back-button');
       const ui = document.getElementById('ui');
+      const backButton = document.getElementById('back-button');
 
-      backButton.addEventListener('click', function() {
+      // Función para mostrar la UI
+      function showUI() {
+          ui.style.display = 'flex';
+      }
+
+      // Evento para regresar a la vista AR
+      backButton.addEventListener('click', () => {
           ui.style.display = 'none';
-      });
-
-      // Función para ocultar el círculo y mostrar la UI
-      document.querySelectorAll('.circle').forEach(circle => {
-          circle.addEventListener('click', () => {
-              circle.setAttribute('visible', false); // Oculta el círculo
-              ui.style.display = 'flex'; // Muestra la UI
-          });
       });
     </script>
   </body>
