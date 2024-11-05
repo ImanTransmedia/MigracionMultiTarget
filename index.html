@@ -1,55 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>AR Multi-target UI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-</head>
-<body>
+  <head>
+      <title>Hello World!</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+      <style>
+          #ui {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: none;
+              background: rgba(0, 0, 0, 0.8);
+              justify-content: center;
+              align-items: center;
+          }
+          .circle {
+              width: 50px;
+              height: 50px;
+              background-color: red;
+              border-radius: 50%;
+              position: absolute;
+              cursor: pointer;
+          }
+          #back-button {
+              padding: 10px 20px;
+              background-color: white;
+              border: none;
+              cursor: pointer;
+          }
+      </style>
+  </head>
+  <body>
+    <div id="ui">
+      <button id="back-button">Regresar</button>
+    </div>
+    
     <a-scene mindar-image="imageTargetSrc: targets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-        <a-assets>
-            <a-asset-item id="bearModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
-            <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
-        </a-assets>
+      <a-assets>
+        <a-asset-item id="bearModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
+        <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
+      </a-assets>
 
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <!-- UI Rectángulo para desplegar al hacer tap -->
-        <a-plane id="ui-rect" visible="false" color="#333" position="0 0 -1" width="1.6" height="0.9">
-            <a-text value="Volver" position="0 -0.35 0.01" align="center" color="#FFF" width="1" wrap-count="15"></a-text>
-        </a-plane>
+      <a-entity mindar-image-target="targetIndex: 0" id="target0" position="0 0 0">
+          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+          <a-entity class="circle" position="0 0 0" event-set__mouseenter="_event: mouseenter; color: green" event-set__mouseleave="_event: mouseleave; color: red" event-set__click="_event: click; _target: #ui; display: flex"></a-entity>
+      </a-entity>
+      
+      <a-entity mindar-image-target="targetIndex: 1" id="target1" position="0 0 0">
+        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        <a-entity class="circle" position="0 0 0" event-set__mouseenter="_event: mouseenter; color: green" event-set__mouseleave="_event: mouseleave; color: red" event-set__click="_event: click; _target: #ui; display: flex"></a-entity>
+      </a-entity>
 
-        <!-- Modelos y botones de cada target -->
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-            <a-circle id="button-0" radius="0.15" color="#F00" position="0 0 0.1" class="target-button" event-set__click="_event: click; visible: false; _target: #ui-rect;"></a-circle>
-        </a-entity>
-
-        <a-entity mindar-image-target="targetIndex: 1">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-            <a-circle id="button-1" radius="0.15" color="#F00" position="0 0 0.1" class="target-button" event-set__click="_event: click; visible: false; _target: #ui-rect;"></a-circle>
-        </a-entity>
-
-        <!-- Puedes añadir más targets con el mismo patrón -->
-
+      <!-- Repite para los demás targets -->
+      
     </a-scene>
 
     <script>
-        // Ocultar el rectángulo de UI y mostrar los botones nuevamente
-        document.querySelector('#ui-rect').addEventListener('click', function () {
-            this.setAttribute('visible', 'false');
-            document.querySelectorAll('.target-button').forEach(button => button.setAttribute('visible', 'true'));
-        });
+      const backButton = document.getElementById('back-button');
+      const ui = document.getElementById('ui');
 
-        // Ocultar botones y mostrar el UI al hacer click en cualquier círculo
-        document.querySelectorAll('.target-button').forEach(button => {
-            button.addEventListener('click', function () {
-                document.querySelector('#ui-rect').setAttribute('visible', 'true');
-                document.querySelectorAll('.target-button').forEach(btn => btn.setAttribute('visible', 'false'));
-            });
-        });
+      backButton.addEventListener('click', function() {
+          ui.style.display = 'none';
+      });
+
+      // Función para ocultar el círculo y mostrar la UI
+      document.querySelectorAll('.circle').forEach(circle => {
+          circle.addEventListener('click', () => {
+              circle.setAttribute('visible', false); // Oculta el círculo
+              ui.style.display = 'flex'; // Muestra la UI
+          });
+      });
     </script>
-</body>
+  </body>
 </html>
+
