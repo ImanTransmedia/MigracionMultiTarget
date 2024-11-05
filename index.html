@@ -1,112 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-      <title>Mind AR Multi-Target</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-      <style>
-          /* Estilo para la UI que ocupa el 80% de la pantalla */
-          #ui {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              display: none;
-              background: rgba(0, 0, 0, 0.8);
-              justify-content: center;
-              align-items: center;
-              z-index: 10;
-          }
-          #back-button {
-              padding: 10px 20px;
-              background-color: white;
-              border: none;
-              cursor: pointer;
-              font-size: 16px;
-          }
-      </style>
-  </head>
-  <body>
+<head>
+    <title>Mind AR Multi-Target</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        #ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 5;
+            display: none;
+        }
+        #back-button {
+            padding: 10px 20px;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
     <!-- UI overlay -->
     <div id="ui">
-      <button id="back-button">Regresar</button>
+        <button id="back-button">Regresar</button>
     </div>
 
     <a-scene mindar-image="imageTargetSrc: targets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
-        <a-asset-item id="bearModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
-        <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
-      </a-assets>
+        <a-assets>
+            <a-asset-item id="bearModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
+            <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
+        </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: red; opacity: 0.8" onclick="showUI()" id="red-button"></a-plane>
 
-      <!-- Target Entities with Circle Buttons -->
-      <a-entity mindar-image-target="targetIndex: 0" id="target0">
-          <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-          <!-- Botón circular que sigue al target -->
-          <a-circle 
-              position="0 0.5 0.1" 
-              radius="0.15" 
-              color="red"
-              class="button-circle"
-              opacity="0.8"
-              visible="false" 
-              onclick="showUI()">
-          </a-circle>
-      </a-entity>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 1" id="target1">
-        <a-gltf-model position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        <a-circle 
-            position="0 0.5 0.1" 
-            radius="0.15" 
-            color="blue"
-            class="button-circle" 
-            opacity="0.8" 
-            visible="false" 
-            onclick="showUI()">
-        </a-circle>
-      </a-entity>
-
-      <!-- Añade más entidades si es necesario -->
-
+        <!-- Target Entities with 3D Models -->
+        <a-entity mindar-image-target="targetIndex: 0" id="target0">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 1" id="target1">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 2" id="target2">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 3" id="target3">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 4" id="target4">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 5" id="target5">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 6" id="target6">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 7" id="target7">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 8" id="target8">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 9" id="target9">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
     </a-scene>
 
     <script>
-      const ui = document.getElementById('ui');
-      const backButton = document.getElementById('back-button');
+        const ui = document.getElementById('ui');
+        const backButton = document.getElementById('back-button');
+        const redButton = document.getElementById('red-button');
 
-      // Función para mostrar la UI
-      function showUI() {
-          ui.style.display = 'flex';
-      }
+        // Función para mostrar la UI
+        function showUI() {
+            ui.style.display = 'flex';
+        }
 
-      // Evento para regresar a la vista AR
-      backButton.addEventListener('click', () => {
-          ui.style.display = 'none';
-          // Reactiva todos los botones circulares ocultos
-          document.querySelectorAll('.button-circle').forEach(button => button.setAttribute('visible', 'true'));
-      });
+        // Evento para regresar a la vista AR
+        backButton.addEventListener('click', () => {
+            ui.style.display = 'none';
+        });
 
-      // Activar y desactivar el botón cuando se detectan los targets
-      document.querySelectorAll('[mindar-image-target]').forEach(target => {
-          const button = target.querySelector('.button-circle');
+        // Detectar cuando el modelo 3D está completamente cargado
+        AFRAME.registerComponent('model-tracker', {
+            init: function () {
+                const model = this.el;
 
-          // Muestra el botón cuando el target es encontrado
-          target.addEventListener('targetFound', () => {
-              button.setAttribute('visible', 'true');
-          });
+                model.addEventListener('model-loaded', () => {
+                    redButton.style.display = 'block';
+                });
 
-          // Oculta el botón cuando el target se pierde
-          target.addEventListener('targetLost', () => {
-              button.setAttribute('visible', 'false');
-          });
-      });
+                model.addEventListener('model-error', () => {
+                    redButton.style.display = 'none';
+                });
+
+                // Ocultar el botón cuando no se encuentra el target
+                this.el.addEventListener('targetLost', () => {
+                    redButton.style.display = 'none';
+                });
+            }
+        });
+
+        // Agrega el componente a cada target con modelo 3D (targetIndex 0 al 9)
+        for (let i = 0; i <= 9; i++) {
+            document.getElementById(`target${i}`).setAttribute('model-tracker', '');
+        }
     </script>
-  </body>
+</body>
 </html>
 
 
