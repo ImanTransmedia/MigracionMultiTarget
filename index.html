@@ -30,7 +30,7 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             z-index: 5;
-
+            display: none;
         }
         #back-button {
             padding: 10px 20px;
@@ -45,10 +45,6 @@
     <!-- UI overlay -->
     <div id="ui">
         <button id="back-button">Regresar</button>
-
-        
-            
-        
     </div>
 
     <a-scene mindar-image="imageTargetSrc: targets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
@@ -57,47 +53,41 @@
             <a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
         </a-assets>
 
- 
         <a-plane position="0 0.5 0" scale="0.1 0.1 0.1" class="circle" material="color: red; opacity: 0.8" onclick="showUI()" id="red-button"></a-plane>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0">
-          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-      </a-entity>
-        
-        <a-entity mindar-image-target="targetIndex: 2">
-          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 3">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-      </a-entity>
-
-        <a-entity mindar-image-target="targetIndex: 4">
-          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 5">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-      </a-entity>
-
-        <a-entity mindar-image-target="targetIndex: 6">
-          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 7">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-      </a-entity>   
-
-        <a-entity mindar-image-target="targetIndex: 8">
-          <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 9">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-      </a-entity>
-        <!-- Añade más entidades si es necesario -->
-
+        <!-- Target Entities with 3D Models -->
+        <a-entity mindar-image-target="targetIndex: 0" id="target0">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 1" id="target1">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 2" id="target2">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 3" id="target3">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 4" id="target4">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 5" id="target5">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 6" id="target6">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 7" id="target7">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 8" id="target8">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 9" id="target9">
+            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
+        </a-entity>
     </a-scene>
 
     <script>
@@ -115,21 +105,30 @@
             ui.style.display = 'none';
         });
 
-        // Detectar cuando se escanea un target
-        AFRAME.registerComponent('target-tracker', {
+        // Detectar cuando el modelo 3D está completamente cargado
+        AFRAME.registerComponent('model-tracker', {
             init: function () {
-                this.el.addEventListener('targetFound', () => {
+                const model = this.el;
+
+                model.addEventListener('model-loaded', () => {
                     redButton.style.display = 'block';
                 });
+
+                model.addEventListener('model-error', () => {
+                    redButton.style.display = 'none';
+                });
+
+                // Ocultar el botón cuando no se encuentra el target
                 this.el.addEventListener('targetLost', () => {
                     redButton.style.display = 'none';
                 });
             }
         });
 
-        // Agrega el componente a los targets
-        document.getElementById('target0').setAttribute('target-tracker', '');
-        document.getElementById('target1').setAttribute('target-tracker', '');
+        // Agrega el componente a cada target con modelo 3D (targetIndex 0 al 9)
+        for (let i = 0; i <= 9; i++) {
+            document.getElementById(`target${i}`).setAttribute('model-tracker', '');
+        }
     </script>
 </body>
 </html>
