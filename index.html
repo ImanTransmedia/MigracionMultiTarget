@@ -30,7 +30,7 @@
             transform: translate(-50%, -50%);
             cursor: pointer;
             z-index: 5;
-            display: none; /* El botón rojo ahora está oculto por defecto */
+            display: none; /* Oculto por defecto */
         }
         #back-button {
             padding: 10px 20px;
@@ -64,30 +64,8 @@
         <a-entity mindar-image-target="targetIndex: 1" id="target1">
             <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
         </a-entity>
-        <a-entity mindar-image-target="targetIndex: 2" id="target2">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 3" id="target3">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 4" id="target4">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 5" id="target5">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 6" id="target6">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 7" id="target7">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 8" id="target8">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer></a-gltf-model>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 9" id="target9">
-            <a-gltf-model rotation="0 0 0" position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer></a-gltf-model>
-        </a-entity>
+        <!-- Más entidades según targetIndex si es necesario -->
+
     </a-scene>
 
     <script>
@@ -105,34 +83,41 @@
             ui.style.display = 'none';
         });
 
-        // Detectar cuando el modelo 3D está completamente cargado y el target está visible
+        // Componente personalizado para gestionar la visibilidad del botón rojo
         AFRAME.registerComponent('model-tracker', {
             init: function () {
                 const model = this.el.querySelector('a-gltf-model');
+                let isTargetFound = false;
 
-                // Al iniciar, ocultamos el botón para asegurarnos que no aparezca hasta cargar un modelo
+                // Al iniciar, ocultamos el botón rojo
                 redButton.style.display = 'none';
 
+                // Mostrar el botón solo cuando el modelo esté cargado y el target esté visible
                 this.el.addEventListener('targetFound', () => {
-                    redButton.style.display = 'none'; // Aseguramos que se mantenga oculto mientras carga el modelo
+                    isTargetFound = true;
+                    redButton.style.display = 'none'; // Asegura que el botón esté oculto al inicio de la detección
                 });
 
                 model.addEventListener('model-loaded', () => {
-                    if (this.el.object3D.visible) { // Verifica si el target sigue visible cuando el modelo carga
-                        redButton.style.display = 'block';
+                    if (isTargetFound) {
+                        redButton.style.display = 'block'; // Mostrar el botón una vez el modelo esté visible
                     }
                 });
 
-                // Oculta el botón cuando se pierde el target
+                // Ocultar el botón cuando se pierde el target
                 this.el.addEventListener('targetLost', () => {
+                    isTargetFound = false;
                     redButton.style.display = 'none';
                 });
             }
         });
 
-        // Asignar el componente a cada target del 0 al 9
+        // Asignar el componente model-tracker a cada target
         for (let i = 0; i <= 9; i++) {
-            document.getElementById(`target${i}`).setAttribute('model-tracker', '');
+            const target = document.getElementById(`target${i}`);
+            if (target) {
+                target.setAttribute('model-tracker', '');
+            }
         }
     </script>
 </body>
